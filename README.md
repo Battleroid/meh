@@ -1,6 +1,11 @@
 # meh
 basic, personal 4chan archiver
 
+why
+---
+
+bored, excuse to work with peewee some more and look into celery, celery is pretty fucking cool
+
 what
 ----
 
