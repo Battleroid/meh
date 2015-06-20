@@ -1,0 +1,6 @@
+{% for thread in threads %}
+	<tr>
+		<td>{{ thread.no }}</td>
+		<td>{{ thread.post|safe }}</td>
+	</tr>
+{% endfor %}

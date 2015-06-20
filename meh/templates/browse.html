@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block page_title %}Browse All{% endblock %}
+
+{% block controls %}
+	{% if threads %}
+		<div id="pagination">
+			{% if page > 1 %}
+				<a href="{{ url_for('browse', page=page - 1) }}">Previous</a>
+			{% endif %}
+			{% if page < pages %}
+				<a href="{{ url_for('browse', page=page + 1) }}">Next</a>
+			{% endif %}
+		</div>
+	{% endif %}
+{% endblock %}
+
+{% block content %}
+	{% if threads %}
+		<div><h5>Page {{ page }} of {{ pages }}. {{ total }} total results.</h5></div>
+		<table>
+			<thead>
+				<tr>
+					<th>No.</th>
+					<th>Post</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for thread in threads %}
+					<tr>
+						<td>{{ thread.no }}</td>
+						<td>{{ thread.post|safe }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block page_title %}Search{% endblock %}
+
+{% block controls %}
+	<form method=post action="{{ url_for('results') }}">
+		<input type=text name=term>
+		<input type=submit value=Search>
+	</form>
+{% endblock %}

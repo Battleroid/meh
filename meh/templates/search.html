@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block page_title %}Search{% endblock %}
+
+{% block controls %}
+	<form action="{{ url_for('search') }}">
+		<input type=text name=q>
+		<input type=submit value=Search>
+	</form>
+	{% if pagination %}
+		<div id="pagination">
+			{% if page > 1 %}
+				<a href="{{ url_for('search', page=page - 1, q=q) }}">Previous</a>
+			{% endif %} 
+			{% if page < pagination.get_pages() %}
+				<a href="{{ url_for('search', page=page + 1, q=q) }}">Next</a>
+			{% endif %}
+		</div>
+	{% endif %}
+{% endblock %}
+
+{% block content %}
+	{% if pagination %}
+		<div><h5>Page {{ page }} of {{ pagination.get_pages() }}. {{ total }} total results.</h5></div>
+		<table>
+			<thead>
+				<tr>
+					<th>No.</th>
+					<th>Post</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for fts in threads %}
+					<tr>
+						<td>{{ fts.thread.no }}</td>
+						<td>{{ fts.post|safe }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+{% endblock %}

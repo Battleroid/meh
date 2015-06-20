@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block page_title %}Home{% endblock %}
+
+{% block controls %}
+	<a href="#" id="update">Update</a>
+{% endblock %}
+
+{% block content %}
+	<h5 id="threads">{{ total }} threads total</h5>
+	<table>
+		<thead>
+			<tr>
+				<th>No.</th>
+				<th>Post</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for thread in threads %}
+			<tr>
+				<td>{{ thread.no }}</td>
+				<td>{{ thread.post|safe }}</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}
+
+{% block scripts %}
+	<script src="//cdnjs.cloudflare.com/ajax/libs/nanobar/0.2.1/nanobar.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script>
+		function update_body() {
+			var tbody = $('tbody');
+			$.get('/refresh', function(data) {
+				tbody.html(data);
+				console.log('updated tbody');
+			});
+		}
+
+		function update_stats() {
+			var threads = $('#threads');
+			$.get('/stats', function(data) {
+				threads.text(data['total_threads'] + ' threads total');
+			});
+		}
+
+		function update_progress(status_url, nanobar) {
+			$.getJSON(status_url, function(data) {
+				percent = parseInt(data['current'] * 100 / data['total']);
+				console.log(percent);
+				nanobar.go(percent);
+				if (data['state'] == 'PENDING' || data['state'] == 'PROGRESS') {
+					setTimeout(function() {
+						update_progress(status_url, nanobar);
+						update_body();
+						update_stats();
+					}, 2000);
+				}
+			});
+		}
+
+		function start_update() {
+			var nanobar = new Nanobar();
+
+			$.ajax({
+				type: 'POST',
+				url: '/update',
+				success: function(data, status, request) {
+					status_url = request.getResponseHeader('Location');
+					update_progress(status_url, nanobar);
+					console.log(status_url);
+				},
+				error: function() {
+					console.log('uh oh');
+				}
+			});
+		}
+
+		$(function() {
+			$('#update').click(start_update);
+
+			setTimeout(function() {
+				update_body();
+				update_stats();
+			}, 30000);
+		});
+	</script>
+{% endblock %}

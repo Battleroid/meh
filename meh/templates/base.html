@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Meh</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+	<div class="container">
+		<header>
+			<h3>{% block page_title %}{% endblock %}</h3>
+			<div class="row">
+				{% include "nav.html" %}
+			</div>
+		</header>
+		<div class="row">
+			{% block controls %}{% endblock %}
+		</div>
+		<div class="row">
+			{% block content %}{% endblock %}
+		</div>
+	</div>
+	{% block scripts %}{% endblock %}
+</body>
+</html>
