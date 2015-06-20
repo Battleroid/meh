@@ -18,6 +18,7 @@ optional: setup a cronjob to run `python func.py` on some interval to update the
 todo
 ----
 
+- [ ] !!! clean up `for thread in threads` on a few of the templates by using the include instead
 - [ ] ! search results need to be ranked according to relevance
 - [ ] ! need way to add and remove boards from database (and cascade removing of threads related), list info for particular boards here too (such as g has 200 threads)
 - [ ] ! way of removing individual threads in list views (search, browse, home, etc)
